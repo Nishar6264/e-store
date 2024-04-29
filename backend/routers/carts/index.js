@@ -1,32 +1,7 @@
-const { addToCart } = require("../../controllers/carts");
-
-const express = require("express");
-const { getProductById } = require("../../controllers/products");
-const { authenticate } = require("../../middleware/auth");
-
+const express = require('express');
 const cartRouter = express.Router();
+const cartController = require("../../controllers/addToCart")
 
-cartRouter.post("/", [authenticate], async (req, res) => {
-  const { idProduct, productCount } = req.query;
-
-  const user = req.user;
-  const product = await getProductById(idProduct);
-
-  const cart = await addToCart({
-    idUser: user.id,
-    idProduct: idProduct,
-    nameProduct: product.name,
-    priceProduct: product.price,
-    count: productCount,
-    img: product.img1,
-  });
-  console.log(cart)
-
-  if (!cart) {
-    res.status(500).send("Can't create cart");
-  }
-
-  res.status(200).send(cart);
-});
+cartRouter.post('/', cartController.addToCart);
 
 module.exports = cartRouter;

@@ -1,4 +1,4 @@
-const { getCartByUser } = require("../../controllers/carts");
+const { getCartByUser } = require("../../controllers/addToCart");
 const { getOrders } = require("../../controllers/order");
 const express = require("express");
 const { authenticate } = require("../../middleware/auth");

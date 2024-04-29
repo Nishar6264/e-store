@@ -12,7 +12,8 @@ export default function DetailProduct() {
   const listProduct = useSelector(
     (state) => state.product.products?.allProduct
   );
- // const user = useSelector((state) => state.auth.login.currentUser);
+ const user = useSelector((state) => state.auth.login.currentUser);
+ const [selectedVariantPrice, setSelectedVariantPrice] = useState(null);
  
 
   const [quantity, setQuantity] = useState(1);
@@ -84,8 +85,10 @@ export default function DetailProduct() {
       theme: "colored",
     });
   };
-
- 
+  const handleVariantClick = (price) => {
+    setSelectedVariantPrice(price);
+  };
+ console.log(product)
 
   useEffect(() => {
  
@@ -213,7 +216,18 @@ export default function DetailProduct() {
               </li>
             </ul>
             <h1>{product?.name}</h1>
-            <p className="text-muted lead">₹{product?.price}</p>
+            {product?.ProductVariants[0].Variants.map((variant, index) => (
+              <button
+                key={index}
+                className="text-muted lead ml-2"
+                onClick={() => handleVariantClick(variant.price)}
+              >
+                {variant.variantAttributes}
+              </button>
+            ))}
+            {selectedVariantPrice && (
+              <p className="text-strong lead m-2">₹{selectedVariantPrice}</p>
+            )}
             <p className="text-small mb-4">{product?.description}</p>
             <div className="row align-items-stretch mb-4">
               <div className="col-sm-5 pr-sm-0">
@@ -268,10 +282,7 @@ export default function DetailProduct() {
                   </strong>
                   <a className="reset-anchor ml-2">{product?.category}s</a>
                 </li>
-                <li className="px-3 py-2 mb-1 bg-white text-muted">
-                  <strong className="text-uppercase text-dark">Tags:</strong>
-                  <a className="reset-anchor ml-2">Innovation</a>
-                </li>
+                
               </ul>
             </div>
           </div>

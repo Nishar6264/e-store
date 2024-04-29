@@ -5,12 +5,12 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate({ Cart, Comment, Orders,  }) {
       User.hasOne(Cart, {
-        foreignKey: "idUser",
+        foreignKey: "userId",
         // as: "cart",
       });
 
       User.hasOne(Orders, {
-        foreignKey: "idUser",
+        foreignKey: "userId",
         // as: "orders",
       });
      

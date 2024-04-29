@@ -3,18 +3,20 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Cart extends Model {
    
-    static associate({ User, Products }) {
+    static associate({ User, Products, Variants }) {
       // define association here
-      Cart.belongsTo(User, { foreignKey: "idUser" });
-      Cart.belongsTo(Products, { foreignKey: "idProduct" });
+      Cart.belongsTo(User, { foreignKey: "userId" });
+      Cart.belongsTo(Products, { foreignKey: "productId" });
+      Cart.belongsTo(Variants, {foreignKey:"variantID"})
     }
   }
   Cart.init(
     {
-      idUser: DataTypes.INTEGER,
-      idProduct: DataTypes.INTEGER,
-      nameProduct: DataTypes.STRING,
-      priceProduct: DataTypes.STRING,
+      userId: DataTypes.INTEGER,
+      productId: DataTypes.INTEGER,
+      productName: DataTypes.STRING,
+      variantAttributes: DataTypes.STRING,
+      variantPrice: DataTypes.STRING,
       count: DataTypes.INTEGER,
       img: DataTypes.STRING,
     },

@@ -30,6 +30,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Categories",
     }
   );
-//  Categories.sync({ alter: true });
+//  Categories.sync({ force: true });
   return Categories;
 };

@@ -1,15 +1,18 @@
-
-
+// Variants.js
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   class Variants extends Model {
-    static associate({ ProductVariants }) {
-      // Define association here
+    static associate({ ProductVariants, Cart, Products }) {
       Variants.belongsTo(ProductVariants, {
-        foreignKey: "VariantID",
-        // as: "variants",
+        foreignKey: "variantId",
+      });
+      Variants.hasMany(Cart, {
+        foreignKey: "variantId",
+      });
+      Variants.belongsTo(Products, {
+        foreignKey: "productId",
       });
     }
   }
@@ -23,7 +26,7 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      VariantID: {
+      variantId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -31,13 +34,21 @@ module.exports = (sequelize) => {
           key: "id",
         },
       },
+      productId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Products", 
+          key: "id",
+        },
+      },
     },
     {
       sequelize,
       modelName: "Variants",
-      timestamps: false, 
+      timestamps: false,
     }
   );
-  Variants.sync({alter:true})
+    // Variants.sync({force:true})
   return Variants;
 };

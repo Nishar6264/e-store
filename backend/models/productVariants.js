@@ -44,6 +44,6 @@ module.exports = (sequelize) => {
       timestamps: false, 
     }
   );
-  ProductVariants.sync({alter:true})
+  // ProductVariants.sync({alter:true})
   return ProductVariants;
 };

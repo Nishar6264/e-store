@@ -57,10 +57,10 @@ export const getListProductFilter = async (dispatch, params) => {
 export const getProductById = async (dispatch, id) => {
   dispatch(getProductDetailStart());
   try {
-    const response = await axios.get(`${DOMAIN}/api/v1/products/${id}`);
-    dispatch(getProductDetailSuccess(response.data));
+    const response = await axios.get(`${DOMAIN}/api/v1/products/get/${id}`);
+    dispatch(getProductDetailSuccess(response.data.data));
   } catch (err) {
-    dispatch(getProductDetailFailed(err.response.data));
+    dispatch(getProductDetailFailed(err.response.data.data));
   }
 };
 

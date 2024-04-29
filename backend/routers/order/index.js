@@ -5,7 +5,7 @@ const {
   updateOrders,
   getListOrders,
 } = require("../../controllers/order");
-const { getCartByUser } = require("../../controllers/carts");
+const { getCartByUser } = require("../../controllers/addToCart");
 const orderRouter = express.Router();
 
 
@@ -56,19 +56,19 @@ orderRouter.post("/", async (req, res) => {
 });
 
 
-// orderRouter.patch("/", async (req,res)=>{
-//   const { status, delivery } = req.body;
+orderRouter.patch("/", async (req,res)=>{
+  const { status, delivery } = req.body;
   
-//   const statusUpdate = await updateOrders({
-//     status,
-//     delivery
-//   });
-//   console.log(statusUpdate)
-//   if (!statusUpdate) {
-//     return res.status(500).send("Can't Updates Orders");
-//   } 
-//   res.status(200).send(statusUpdate);
-// })
+  const statusUpdate = await updateOrders({
+    status,
+    delivery
+  });
+  console.log(statusUpdate)
+  if (!statusUpdate) {
+    return res.status(500).send("Can't Updates Orders");
+  } 
+  res.status(200).send(statusUpdate);
+})
 
 orderRouter.patch("/:id", async (req, res) => {
   const { id } = req.params;
@@ -94,13 +94,13 @@ orderRouter.patch("/:id", async (req, res) => {
 });
 
 
-// orderRouter.get("/", async (req, res) => {
-//   const listOrders = await getListOrders();
+orderRouter.get("/", async (req, res) => {
+  const listOrders = await getListOrders();
 
-//   if (!listOrders) {
-//     return res.status(500).send("Can't get list Orders");
-//   }
+  if (!listOrders) {
+    return res.status(500).send("Can't get list Orders");
+  }
 
-//   res.status(200).send(listOrders);
-// });
+  res.status(200).send(listOrders);
+});
 module.exports = orderRouter;

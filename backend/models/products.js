@@ -1,24 +1,20 @@
-// Product.js
+// Products.js
 "use strict";
 const { Model, DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   class Products extends Model {
     static associate({ Cart, ProductVariants, Categories }) {
-      // Define associations here
       Products.hasMany(Cart, {
-        foreignKey: "idProduct",
-        // as: "cart",
+        foreignKey: "productId",
       });
       Products.hasMany(ProductVariants, {
         foreignKey: "productId",
-        // as: "productVariants",
-        onDelete: "CASCADE", // onDelete cascade
-        onUpdate: "CASCADE", // onUpdate cascade
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       });
       Products.belongsTo(Categories, {
         foreignKey: "categoryID",
-        // as: "categories",
       });
     }
   }
@@ -27,7 +23,7 @@ module.exports = (sequelize) => {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
       },
       name: DataTypes.STRING,
       description: DataTypes.TEXT,
@@ -37,7 +33,7 @@ module.exports = (sequelize) => {
       img4: DataTypes.TEXT,
       categoryID: DataTypes.INTEGER,
       category: DataTypes.STRING,
-      stocks: DataTypes.STRING, // Define stock field
+      stocks: DataTypes.STRING,
       promotionPercent: DataTypes.INTEGER,
     },
     {
@@ -45,7 +41,6 @@ module.exports = (sequelize) => {
       modelName: "Products",
     }
   );
-
-  // Products.sync({ alter: true });
+  // Products.sync({force:true})
   return Products;
 };

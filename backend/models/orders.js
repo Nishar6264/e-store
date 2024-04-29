@@ -32,6 +32,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Orders",
     }
   );
-  // Orders.sync({ alter: true });
+  Orders.sync({ alter: true });
   return Orders;
 };

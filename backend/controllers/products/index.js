@@ -53,23 +53,16 @@ const addProduct = async (req, res) => {
   }
 };
 
-
-
-
-// const getListProduct = async () => {
-//   try {
-//     const listProduct = await Product.findAll();
-//     return listProduct;
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
 const getListProduct = async (req, res) => {
   try {
     const products = await Products.findAll({
-      include: [{ model: Categories, as: 'category', attributes: ['categoryName'] }],
-    });
+        include: {
+          model: ProductVariants,
+          include: {
+            model: Variants
+          }
+        }
+  });
 
     return products;
   } catch (error) {
@@ -264,49 +257,27 @@ const getAllProductById = async (req, res) => {
   const id = req.params?.id
 
   //check category
-
-  const checkCat = await Categories.findOne({
-    where: {
-      id: id,
-      isdeleted: 0
-    }
-  })
-
-
-
-
-  let productCondtion = {}
-  let variantCondition = {}
-
-  // console.log("checkCat", checkCat);
-
-  if (checkCat) {
     await Products.findOne({
       where: {
         id: id
       },
       include: {
         model: ProductVariants,
-        where:productCondtion,
         include: {
           model: Variants,
-        // if i want to match variant i have to write condition here
-        where:{
-          var:""
-        }
         }
 
       }
     }).then((result) => {
       if (result) {
+        
         res.send({ data: result, status: 1, message: "Request completed success" })
+        return result;
       }
     }).catch((error) => {
       res.send({ error: error, status: 0, message: "Something went wrong" })
     })
-  } else {
-    res.send({ message: "Not found", status: 0 })
-  }
+ 
 }
 
 module.exports = {

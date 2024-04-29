@@ -41,9 +41,9 @@ export default function ProductForYou({ listProduct }) {
         {listProduct?.map((item, index) => {
           return (
             <div className="shadow " key={index}>
-              <div className="product text-center">
-                <div className="position-relative mb-3">
-                  <div className="badge text-white badge-secondary"></div>
+              <div className="product text-center mb-5">
+                <div className="position-relative">
+                  <div className="badge text-white badge-secondary "></div>
                   <NavLink className="d-block" to={`/detail/${item.id}`}>
                     <img
                       className="img-fluid w-100"
@@ -59,7 +59,7 @@ export default function ProductForYou({ listProduct }) {
                           className="btn btn-sm btn-dark"
                           to={`/detail/${item.id}`}
                         >
-                          Add to cart
+                          View
                         </NavLink>
                       </li>
                       <li className="list-inline-item mr-0">
@@ -80,7 +80,17 @@ export default function ProductForYou({ listProduct }) {
                       <p className="d-block"> {item.name}</p>
                     </a>
                   </h6>
-                  <p className="small text-muted">₹{item.price}</p>
+                  {/* {
+                    
+                  console.log(listProduct)
+                  }
+                  {listProduct?.ProductVariants[0].Variants.map((variant, index) => (
+                  <p key={index} className=" text-dark">₹{variant.price}</p>
+
+                ))} */}
+                
+                 
+
                 </div>
               </div>
             </div>
