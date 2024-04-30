@@ -70,28 +70,40 @@ const getListProduct = async (req, res) => {
   }
 };
 
-const getProductById = async (req, res) => {
-
+const getProductById = async (id) => {
   try {
-    const { id } = req.params;
-
     const product = await Products.findOne({
       where: {
         id,
       },
     });
-
-    if (!product) {
-      return res.status(500).send(`Can't get product id: ${id}`);
-    }
-
-    res.status(200).send(product)
-
     return product;
   } catch (err) {
     console.log(err);
   }
 };
+// const getProductById = async (req, res) => {
+
+//   try {
+//     const { id } = req.params;
+
+//     const product = await Products.findOne({
+//       where: {
+//         id,
+//       },
+//     });
+
+//     if (!product) {
+//       return res.status(500).send(`Can't get product id: ${id}`);
+//     }
+
+//     // res.status(200).send(product)
+
+//     return product;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
 const getProductByCategory = async (category, req, res) => {
   try {
@@ -100,7 +112,7 @@ const getProductByCategory = async (category, req, res) => {
         category,
       },
     });
-    res.status(200).send(product)
+    // res.status(200).send(product)
     return product;
   } catch (err) {
     res.status(400).json({
@@ -253,32 +265,79 @@ const getProductByCat = async (req, res) => {
     res.send({ message: "Not found", status: 0 })
   }
 }
-const getAllProductById = async (req, res) => {
-  const id = req.params?.id
+// const getAllProductById = async (id) => {
 
-  //check category
-    await Products.findOne({
-      where: {
-        id: id
-      },
+//   //check category
+//     await Products.findOne({
+//       where: {
+//         id: id
+//       },
+//       include: {
+//         model: ProductVariants,
+//         include: {
+//           model: Variants,
+//         }
+
+//       }
+//     }).then((result) => {
+//       if (result) {
+        
+//         // res.send({ data: result, status: 1, message: "Request completed success" })
+//         return result;
+//       }
+//     }).catch((error) => {
+//       console.log("error", error.message)
+//       // res.send({ error: error, status: 0, message: "Something went wrong" })
+//     })
+ 
+// }
+// const getAllProductById = async (req, res) => {
+//   const id = req.params?.id
+
+//   //check category
+//     await Products.findOne({
+//       where: {
+//         id: id
+//       },
+//       include: {
+//         model: ProductVariants,
+//         include: {
+//           model: Variants,
+//         }
+
+//       }
+//     }).then((result) => {
+//       if (result) {
+        
+//         res.send({ data: result, status: 1, message: "Request completed success" })
+//         return result;
+//       }
+//     }).catch((error) => {
+//       res.send({ error: error, status: 0, message: "Something went wrong" })
+//     })
+ 
+// }
+const getAllProductById = async (id) => {
+  try {
+    const result = await Products.findOne({
+      where: { id: id },
       include: {
         model: ProductVariants,
         include: {
           model: Variants,
         }
-
       }
-    }).then((result) => {
-      if (result) {
-        
-        res.send({ data: result, status: 1, message: "Request completed success" })
-        return result;
-      }
-    }).catch((error) => {
-      res.send({ error: error, status: 0, message: "Something went wrong" })
-    })
- 
+    });
+    
+    if (result) {
+      return result;
+    }
+  } catch (error) {
+    console.log("error", error.message);
+    throw error; // Re-throw the error to be handled by the caller
+  }
 }
+
 
 module.exports = {
   addProduct,

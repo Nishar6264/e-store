@@ -1,19 +1,34 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Cart extends Model {
-   
-    static associate({ User, Products, Variants }) {
-      // define association here
-      Cart.belongsTo(User, { foreignKey: "userId" });
-      Cart.belongsTo(Products, { foreignKey: "productId" });
-      Cart.belongsTo(Variants, {foreignKey:"variantID"})
-    }
-  }
+{
+      class Cart extends Model {
+        static associate({ User, Products, Variants }) {
+          Cart.belongsTo(User, { foreignKey: "userId" });
+          Cart.belongsTo(Products, { foreignKey: "productId" });
+          Cart.belongsTo(Variants, { foreignKey: "variantId" });
+        }
+      }
+  
   Cart.init(
     {
       userId: DataTypes.INTEGER,
-      productId: DataTypes.INTEGER,
+      productId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Products", 
+          key: "id",
+        },
+      },
+      variantId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Variants", 
+          key: "id",
+        },
+      },
       productName: DataTypes.STRING,
       variantAttributes: DataTypes.STRING,
       variantPrice: DataTypes.STRING,
@@ -25,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Cart",
     }
   );
-  // Cart.sync({ force: true });
+  Cart.sync({ force: true });
   return Cart;
+}
 };

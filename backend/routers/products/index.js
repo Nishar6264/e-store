@@ -18,8 +18,20 @@ const productRouter = express.Router();
 productRouter.post("/",addProduct);
 
 
-productRouter.get("/:id",getProductById);
-productRouter.get("/get/:id",  getAllProductById);
+// productRouter.get("/:id",getProductById);
+// productRouter.get("/get/:id",getAllProductById);
+productRouter.get("/get/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const product = await getAllProductById(id);
+
+  if (!product) {
+    return res.status(500).send(`Can't get product id: ${id}`);
+  }
+
+  res.status(200).send(product);
+});
+
 
 productRouter.get("/", async (req, res) => {
   const page = Number.parseInt(req.query.page);

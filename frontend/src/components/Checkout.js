@@ -10,8 +10,8 @@ import { createOrderUser } from "../services/API/orderApi";
 export default function Checkout() {
   const { carts, cartTotalPrice, } = useSelector((state) => state.cart);
 
-  
-  
+
+
   const { currentUser } = useSelector((state) => state.auth.login);
   const dispatch = useDispatch();
   const [success, setSuccess] = useState(false);
@@ -28,8 +28,8 @@ export default function Checkout() {
       fullName: Yup.string()
         .matches(
           "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" +
-            "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" +
-            "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$",
+          "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" +
+          "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$",
           "Fullname is invalid"
         )
         .min(10)
@@ -47,8 +47,8 @@ export default function Checkout() {
         .required("Required")
         .matches(
           "^[/0-9a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" +
-            "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" +
-            "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$",
+          "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" +
+          "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$",
           "Address is invalid"
         )
         .max(30),
@@ -56,11 +56,14 @@ export default function Checkout() {
     onSubmit: async (values) => {
       for (let item of carts) {
         const params = {
-          idProduct: item.product.id,
+          // userId: currentUser.id,
+          productId: item.product.id,
           productCount: item.quantity,
         };
         const query = "?" + queryString.stringify(params);
 
+        console.log("Current User ID:", currentUser.id);
+        console.log("Query:", query);
         await checkoutProduct(
           dispatch,
           query,
@@ -68,8 +71,9 @@ export default function Checkout() {
           currentUser.id
         );
 
+
         const paramsOrder = {
-          idUser: currentUser.id,
+          userId: currentUser.id,
           phone: values.phone,
           address: values.address,
           fullname: values.fullName,
@@ -82,7 +86,7 @@ export default function Checkout() {
         await createOrderUser(dispatch, paramsOrder);
       }
 
-  
+
       await sendMailCheckout(dispatch, values, currentUser.token);
       setLoad(!load);
       setTimeout(() => {
@@ -236,7 +240,7 @@ export default function Checkout() {
                               {item.product.name}
                             </strong>
                             <span className="text-muted small">
-                            ₹{item.product.price} x {item.quantity}
+                              ₹{item.product.price} x {item.quantity}
                             </span>
                           </li>
                           <li className="border-bottom my-2"></li>

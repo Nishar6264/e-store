@@ -5,12 +5,12 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate({ User }) {
       // define association here
-      Orders.belongsTo(User, { foreignKey: "idUser" });
+      Orders.belongsTo(User, { foreignKey: "userId" });
     }
   }
   Orders.init(
     {
-      idUser: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
       phone: DataTypes.STRING,
       address: DataTypes.STRING,
       quantity: DataTypes.INTEGER,
@@ -32,6 +32,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Orders",
     }
   );
-  Orders.sync({ alter: true });
+  Orders.sync({ force: true });
   return Orders;
 };

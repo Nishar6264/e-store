@@ -5,7 +5,7 @@ const {
   updateOrders,
   getListOrders,
 } = require("../../controllers/order");
-const { getCartByUser } = require("../../controllers/addToCart");
+const { getCartByUser } = require("../../controllers/carts");
 const orderRouter = express.Router();
 
 
@@ -13,10 +13,10 @@ const orderRouter = express.Router();
 
 
 orderRouter.get("/", async (req, res) => {
-  const { idUser } = req.query;
+  const { userId } = req.query;
 
-  if (idUser) {
-    const user = await getOrders(idUser);
+  if (userId) {
+    const user = await getOrders(userId);
     if (!user) {
       return res.status(500).send("Can't get user Orders");
     }
@@ -34,11 +34,11 @@ orderRouter.get("/", async (req, res) => {
 
 
 orderRouter.post("/", async (req, res) => {
-  const { idUser, phone, address, quantity, productName,productPrice,
+  const { userId, phone, address, quantity, productName,productPrice,
     fullname, total } = req.body;
 
   const Orders = await createOrders({
-    idUser,
+    userId,
     phone,
     address,
     quantity,
@@ -47,7 +47,7 @@ orderRouter.post("/", async (req, res) => {
     fullname,
     total,
   });
-  console.log(Orders)
+  // console.log(Orders)
   if (!Orders) {
     return res.status(500).send("Can't create Orders");
   }
@@ -63,7 +63,7 @@ orderRouter.patch("/", async (req,res)=>{
     status,
     delivery
   });
-  console.log(statusUpdate)
+  // console.log(statusUpdate)
   if (!statusUpdate) {
     return res.status(500).send("Can't Updates Orders");
   } 

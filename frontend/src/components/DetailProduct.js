@@ -9,9 +9,7 @@ import { toast } from "react-toastify";
 export default function DetailProduct() {
   const { id } = useParams();
   const product = useSelector((state) => state.product.productDetail?.product);
-  const listProduct = useSelector(
-    (state) => state.product.products?.allProduct
-  );
+
  const user = useSelector((state) => state.auth.login.currentUser);
  const [selectedVariantPrice, setSelectedVariantPrice] = useState(null);
  
@@ -216,6 +214,7 @@ export default function DetailProduct() {
               </li>
             </ul>
             <h1>{product?.name}</h1>
+            {/* {console.log(product.ProductVariants[0].Variants)} */}
             {product?.ProductVariants[0].Variants.map((variant, index) => (
               <button
                 key={index}
@@ -288,10 +287,6 @@ export default function DetailProduct() {
           </div>
         </div>
 
-        <h2 className="h5 text-uppercase mb-4">Related products</h2>
-        <div className="row d-block">
-          <ProductForYou listProduct={listProduct} />
-        </div>
       </div>
     </div>
   );

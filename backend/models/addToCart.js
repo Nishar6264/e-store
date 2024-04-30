@@ -29,14 +29,14 @@ module.exports = (sequelize) => {
           key: "id",
         },
       },
-      quantity: DataTypes.INTEGER,
+      quantity: {type: DataTypes.INTEGER,allowNull: false,},
     },
     {
       sequelize,
       modelName: "Cart",
     }
   );
-  Cart.sync({force:true})
+  // Cart.sync({force:true})
   return Cart;
 
 };
