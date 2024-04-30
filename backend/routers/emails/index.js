@@ -1,4 +1,4 @@
-const { getCartByUser } = require("../../controllers/carts");
+// const { getCartByUser } = require("../../controllers/carts");
 const { getOrders } = require("../../controllers/order");
 const express = require("express");
 const { authenticate } = require("../../middleware/auth");
@@ -7,58 +7,49 @@ const nodeMailer = require("nodemailer");
 
 const emailRouter = express.Router();
 
-// emailRouter.post("/", [authenticate], async (req, res) => {
-//   const { fullName, email, phone, address } = req.body;
+emailRouter.post("/", [authenticate], async (req, res) => {
+  const { fullName, email, phone, address } = req.body;
 
-//   const user = req.user;
+  const user = req.user;
 
-//   const subject = "Order Details";
-//   const status = false;
+  const subject = "Order Details";
+  const status = false;
 
-//   const cartsUser = await getCartByUser(user.id);
+  const orderUser = await getOrders(user.id);
+  console.log(orderUser)
 
-//   const total = cartsUser.reduce((total, item) => {
-//     return total + parseInt(item.priceProduct) * parseInt(item.count);
-//   }, 0);
+  const htmlHead = `<table style="width:50%">
+    <tr style="border: 1px solid black;"><th style="border: 1px solid black;">Product Name</th><th style="border: 1px solid black;">Quantity</th><th style="border: 1px solid black;">Total Prices</th>`;
 
-//   const htmlHead = `<table style="width:50%">
-//     <tr style="border: 1px solid black;"><th style="border: 1px solid black;">Product Name</th><th style="border: 1px solid black;">Image</th><th style="border: 1px solid black;">prices</th><th style="border: 1px solid black;">Quantity</th><th style="border: 1px solid black;">Total Prices</th>`;
+  let htmlContent = "";
 
-//   let htmlContent = "";
+  for (let i = 0; i < orderUser.length; i++) {
+    htmlContent += `<tr>
+      <td style="border: 1px solid black; font-size: 1.2rem; text-align: center;">${
+        orderUser[i].productName
+      }</td>
+      <td style="border: 1px solid black; font-size: 1.2rem; text-align: center;">${
+        orderUser[i].quantity
+      }</td>
+      <td style="border: 1px solid black; font-size: 1.2rem; text-align: center;">${
+        orderUser[i].totalPrices
+      }$</td>
+      <tr>`;
+  }
+  const htmlResult = `
+  <h1>Hi, ${fullName}</h1>
+  <h2>Thank you for your order! You made a great choice! </h2>
+  <h3>Phone: ${phone}</h3>
+  <h3>Address: ${address}</h3>
+    ${htmlHead}
+    ${htmlContent}
+  <p>Thank You!</p>
+    `;
 
-//   for (let i = 0; i < cartsUser.length; i++) {
-//     htmlContent += `<tr>
-//       <td style="border: 1px solid black; font-size: 1.2rem; text-align: center;">${
-//         cartsUser[i].nameProduct
-//       }</td>
-//       <td style="border: 1px solid black; font-size: 1.2rem; text-align: center;"><img src=${
-//         cartsUser[i].img1
-//       }width="80" height="80"></td>
-//       <td style="border: 1px solid black; font-size: 1.2rem; text-align: center;">${
-//         cartsUser[i].priceProduct
-//       }$</td>
-//       <td style="border: 1px solid black; font-size: 1.2rem; text-align: center;">${
-//         cartsUser[i].count
-//       }</td>
-//       <td style="border: 1px solid black; font-size: 1.2rem; text-align: center;">
-//       ${parseInt(cartsUser[i].priceProduct) * parseInt(cartsUser[i].count)}
-//       $</td><tr>`;
-//   }
-//   const htmlResult = `
-//   <h1>Hi, ${fullName}</h1>
-//   <h2>Thank you for your order! You made a great choice! </h2>
-//   <h3>Phone: ${phone}</h3>
-//   <h3>Address: ${address}</h3>
-//     ${htmlHead}
-//     ${htmlContent}
-//   <h1>Total: ${total}$
-//   <p>Thank You!</p>
-//     `;
+  const info = await sendMail(email, subject, htmlResult);
 
-//   const info = await sendMail(email, subject, htmlResult);
-
-//   res.status(200).send({ sendEmail: nodeMailer.getTestMessageUrl(info) });
-// });
+  res.status(200).send({ sendEmail: nodeMailer.getTestMessageUrl(info) });
+});
 
 emailRouter.post("/status", [authenticate], async (req, res) => {
   const { fullName, email, phone, address } = req.body;

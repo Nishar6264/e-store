@@ -3,10 +3,10 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
 {
       class Cart extends Model {
-        static associate({ User, Products, Variants }) {
+        static associate({ User, Products, }) {
           Cart.belongsTo(User, { foreignKey: "userId" });
           Cart.belongsTo(Products, { foreignKey: "productId" });
-          Cart.belongsTo(Variants, { foreignKey: "variantId" });
+         
         }
       }
   
@@ -21,17 +21,7 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
-      variantId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Variants", 
-          key: "id",
-        },
-      },
       productName: DataTypes.STRING,
-      variantAttributes: DataTypes.STRING,
-      variantPrice: DataTypes.STRING,
       count: DataTypes.INTEGER,
       img: DataTypes.STRING,
     },
@@ -40,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Cart",
     }
   );
-  Cart.sync({ force: true });
+  // Cart.sync({ alter: true });
   return Cart;
 }
 };

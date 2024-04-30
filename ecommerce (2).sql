@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 30, 2024 at 11:08 AM
+-- Generation Time: Apr 30, 2024 at 12:54 PM
 -- Server version: 8.2.0
 -- PHP Version: 8.1.26
 
@@ -32,19 +32,28 @@ CREATE TABLE IF NOT EXISTS `carts` (
   `id` int NOT NULL AUTO_INCREMENT,
   `userId` int DEFAULT NULL,
   `productId` int NOT NULL,
-  `variantId` int NOT NULL,
   `productName` varchar(255) DEFAULT NULL,
-  `variantAttributes` varchar(255) DEFAULT NULL,
-  `variantPrice` varchar(255) DEFAULT NULL,
   `count` int DEFAULT NULL,
   `img` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
-  KEY `productId` (`productId`),
-  KEY `variantId` (`variantId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `productId` (`productId`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `carts`
+--
+
+INSERT INTO `carts` (`id`, `userId`, `productId`, `productName`, `count`, `img`, `createdAt`, `updatedAt`) VALUES
+(1, 1, 4, 'OPPOF19', 2, 'https://cdn.dummyjson.com/product-images/4/1.jpg', '2024-04-30 12:34:27', '2024-04-30 12:34:27'),
+(2, 1, 4, 'OPPOF19', 2, 'https://cdn.dummyjson.com/product-images/4/1.jpg', '2024-04-30 12:44:50', '2024-04-30 12:44:50'),
+(3, 1, 3, 'Samsung Universe 9', 2, 'https://cdn.dummyjson.com/product-images/3/1.jpg', '2024-04-30 12:44:50', '2024-04-30 12:44:50'),
+(4, 1, 4, 'OPPOF19', 2, 'https://cdn.dummyjson.com/product-images/4/1.jpg', '2024-04-30 12:47:20', '2024-04-30 12:47:20'),
+(5, 1, 3, 'Samsung Universe 9', 2, 'https://cdn.dummyjson.com/product-images/3/1.jpg', '2024-04-30 12:47:20', '2024-04-30 12:47:20'),
+(6, 1, 4, 'OPPOF19', 2, 'https://cdn.dummyjson.com/product-images/4/1.jpg', '2024-04-30 12:49:32', '2024-04-30 12:49:32'),
+(7, 1, 3, 'Samsung Universe 9', 2, 'https://cdn.dummyjson.com/product-images/3/1.jpg', '2024-04-30 12:49:32', '2024-04-30 12:49:32');
 
 -- --------------------------------------------------------
 
@@ -83,16 +92,28 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `address` varchar(255) DEFAULT NULL,
   `quantity` int DEFAULT NULL,
   `fullname` varchar(255) DEFAULT NULL,
-  `total` varchar(255) DEFAULT NULL,
   `productName` varchar(255) DEFAULT NULL,
-  `productPrice` varchar(255) DEFAULT NULL,
+  `totalPrices` varchar(255) DEFAULT NULL,
   `status` tinyint DEFAULT '0',
   `delivery` tinyint DEFAULT '0',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `userId`, `phone`, `address`, `quantity`, `fullname`, `productName`, `totalPrices`, `status`, `delivery`, `createdAt`, `updatedAt`) VALUES
+(1, 1, '9973775325', 'Ahmedabad Gujarat', 2, 'Nishar Alam', 'OPPOF19', '51198', 0, 0, '2024-04-30 12:34:27', '2024-04-30 12:34:27'),
+(2, 1, '9973775325', 'Ahmedabad Gujarat', 2, 'Nishar Alam', 'OPPOF19', '110396', 0, 0, '2024-04-30 12:44:50', '2024-04-30 12:44:50'),
+(3, 1, '9973775325', 'Ahmedabad Gujarat', 2, 'Nishar Alam', 'Samsung Universe 9', '110396', 0, 0, '2024-04-30 12:44:50', '2024-04-30 12:44:50'),
+(4, 1, '9973775325', 'Ahmedabad Gujarat', 2, 'Nishar Alam', 'OPPOF19', '110396', 0, 0, '2024-04-30 12:47:20', '2024-04-30 12:47:20'),
+(5, 1, '9973775325', 'Ahmedabad Gujarat', 2, 'Nishar Alam', 'Samsung Universe 9', '110396', 0, 0, '2024-04-30 12:47:20', '2024-04-30 12:47:20'),
+(6, 1, '9973775325', 'Ahmedabad Gujarat', 2, 'Nishar Alam', 'OPPOF19', '110396', 0, 0, '2024-04-30 12:49:32', '2024-04-30 12:49:32'),
+(7, 1, '9973775325', 'Ahmedabad Gujarat', 2, 'Nishar Alam', 'Samsung Universe 9', '110396', 0, 0, '2024-04-30 12:49:33', '2024-04-30 12:49:33');
 
 -- --------------------------------------------------------
 
@@ -286,13 +307,17 @@ INSERT INTO `variants` (`id`, `variantAttributes`, `price`, `variantId`, `produc
 ALTER TABLE `carts`
   ADD CONSTRAINT `carts_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `carts_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `carts_ibfk_3` FOREIGN KEY (`variantId`) REFERENCES `variants` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `carts_ibfk_3` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `carts_ibfk_4` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `carts_ibfk_5` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `carts_ibfk_6` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `products`

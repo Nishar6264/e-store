@@ -10,9 +10,9 @@ export default function DetailProduct() {
   const { id } = useParams();
   const product = useSelector((state) => state.product.productDetail?.product);
 
- const user = useSelector((state) => state.auth.login.currentUser);
- const [selectedVariantPrice, setSelectedVariantPrice] = useState(null);
- 
+  const user = useSelector((state) => state.auth.login.currentUser);
+  const [selectedVariantPrice, setSelectedVariantPrice] = useState(null);
+
 
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
@@ -70,26 +70,30 @@ export default function DetailProduct() {
     quantity(value);
   };
 
-  const handleAddToCart = (product, quantity) => {
-    dispatch(incrementItem({ product, quantity }));
-    toast.success("Add Product To Cart Success", {
-      position: "bottom-left",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
+  const handleAddToCart = () => {
+    if (selectedVariantPrice !== null) {
+      dispatch(incrementItem({ product, quantity, selectedVariantPrice }));
+      toast.success("Add Product To Cart Success", {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
+      toast.error("Please select a variant", { /* Toast notification */ });
+    }
   };
   const handleVariantClick = (price) => {
     setSelectedVariantPrice(price);
   };
- console.log(product)
+  console.log(product)
 
   useEffect(() => {
- 
+
   }, []);
 
   return (
@@ -263,9 +267,15 @@ export default function DetailProduct() {
                 </div>
               </div>
               <div className="col-sm-3 pl-sm-0">
-                <button
+                {/* <button
                   className="btn btn-dark btn-md btn-block d-flex align-items-center justify-content-center px-0 text-white ml-2"
                   onClick={() => handleAddToCart(product, quantity)}
+                >
+                  Add to cart
+                </button> */}
+                <button
+                  className="btn btn-dark btn-md btn-block d-flex align-items-center justify-content-center px-0 text-white ml-2"
+                  onClick={handleAddToCart}
                 >
                   Add to cart
                 </button>
@@ -281,7 +291,7 @@ export default function DetailProduct() {
                   </strong>
                   <a className="reset-anchor ml-2">{product?.category}s</a>
                 </li>
-                
+
               </ul>
             </div>
           </div>

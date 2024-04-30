@@ -1,10 +1,10 @@
 const { Orders, User } = require("../../models");
 
-const getOrders = async (idUser) => {
+const getOrders = async (userId) => {
   try {
     const OrdersUser = await Orders.findAll({
       where: {
-        idUser,
+        userId,
       },
     });
     return OrdersUser;

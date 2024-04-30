@@ -1,12 +1,7 @@
 import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import {
-  addToCart,
-  decrementItem,
-  removeItem,
-  showQuantity,
-} from "../redux/cartSlice";
+import { addToCart, decrementItem, removeItem, showQuantity } from "../redux/cartSlice";
 import { toast } from "react-toastify";
 
 export default function CartFilter() {
@@ -14,7 +9,7 @@ export default function CartFilter() {
   const dispatch = useDispatch();
 
   const handleRemove = (product) => {
-    dispatch(removeItem(product));
+    dispatch(removeItem({ productId: product.product.id, selectedVariantPrice: product.selectedVariantPrice }));
     toast.success("Delete Cart Success", {
       position: "bottom-left",
       autoClose: 5000,
@@ -28,10 +23,10 @@ export default function CartFilter() {
   };
 
   const handleShowQuantity = (product, quantity) => {
-    dispatch(showQuantity(product, quantity));
+    dispatch(showQuantity({ productId: product.product.id, quantity }));
   };
   const handleIncrement = (product) => {
-    dispatch(addToCart(product));
+    dispatch(addToCart({ product: product.product, quantity: 1, selectedVariantPrice: product.selectedVariantPrice }));
     toast.success("Add Product Success", {
       position: "bottom-left",
       autoClose: 5000,
@@ -45,7 +40,7 @@ export default function CartFilter() {
   };
 
   const handleDecrement = (product) => {
-    dispatch(decrementItem(product));
+    dispatch(decrementItem({ productId: product.product.id, selectedVariantPrice: product.selectedVariantPrice }));
     toast.success("Delete Product Success", {
       position: "bottom-left",
       autoClose: 5000,
@@ -59,6 +54,7 @@ export default function CartFilter() {
   };
 
   return (
+   
     <div className="table-responsive mb-4">
       <table className="table">
         <thead className="bg-light">
@@ -95,39 +91,25 @@ export default function CartFilter() {
               <tr className="text-center">
                 <td className="pl-0 border-0">
                   <div className="media align-items-center justify-content-center">
-                    <NavLink
-                      className="reset-anchor d-block animsition-link"
-                      to={`/detail/${item.product.id}`}
-                    >
-                      <img
-                        src={item.product.img1}
-                        alt={item.product.img1}
-                        width="70"
-                      />
+                    <NavLink className="reset-anchor d-block animsition-link" to={`/detail/${item.product.id}`}>
+                      <img src={item.product.img1} alt={item.product.img1} width="70" />
                     </NavLink>
                   </div>
                 </td>
                 <td className="align-middle border-0">
                   <div className="media align-items-center justify-content-center">
-                    <NavLink
-                      className="reset-anchor h6 animsition-link"
-                      to={`/detail/${item.product.id}`}
-                    >
+                    <NavLink className="reset-anchor h6 animsition-link" to={`/detail/${item.product.id}`}>
                       {item.product.name}
                     </NavLink>
                   </div>
                 </td>
 
                 <td className="align-middle border-0">
-                  <p className="mb-0 small">₹{item.product.ProductVariants[0].Variants.price}</p>
+                  <p className="mb-0 small">₹{item.selectedVariantPrice}</p>
                 </td>
                 <td className="align-middle border-0">
                   <div className="quantity justify-content-center">
-                    <button
-                      className="dec-btn p-0"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleDecrement(item)}
-                    >
+                    <button className="dec-btn p-0" style={{ cursor: "pointer" }} onClick={() => handleDecrement(item)}>
                       <i className="fas fa-caret-left"></i>
                     </button>
                     <input
@@ -136,29 +118,17 @@ export default function CartFilter() {
                       value={item.quantity}
                       onChange={() => handleShowQuantity(item, item.quantity)}
                     />
-                    <button
-                      className="inc-btn p-0"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleIncrement(item)}
-                    >
+                    <button className="inc-btn p-0" style={{ cursor: "pointer" }} onClick={() => handleIncrement(item)}>
                       <i className="fas fa-caret-right"></i>
                     </button>
                   </div>
                 </td>
                 <td className="align-middle border-0">
-                  <p className="mb-0 small">
-                    ${parseInt(item.quantity) * parseInt(item.product.ProductVariants[0].Variants.price)}
-                  </p>
+                  <p className="mb-0 small">₹{parseInt(item.quantity) * parseInt(item.selectedVariantPrice)}</p>
                 </td>
                 <td className="align-middle border-0">
-                  <a
-                    className="reset-anchor remove_cart"
-                    style={{ cursor: "pointer" }}
-                  >
-                    <i
-                      className="fas fa-trash-alt small text-muted"
-                      onClick={() => handleRemove(item.product.id)}
-                    ></i>
+                  <a className="reset-anchor remove_cart" style={{ cursor: "pointer" }}>
+                    <i className="fas fa-trash-alt small text-muted" onClick={() => handleRemove(item)}></i>
                   </a>
                 </td>
               </tr>

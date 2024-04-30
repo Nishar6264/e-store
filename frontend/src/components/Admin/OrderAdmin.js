@@ -107,7 +107,7 @@ export default function OrderAdmin() {
                           <td>{item.phone}</td>
                           <td>{item.address}</td>
                           <td>{item.productName}</td>
-                          <td>{item.total}</td>
+                          <td>{item.totalPrices}</td>
                           <td>
                             {item.delivery
                               ? "Delivered"

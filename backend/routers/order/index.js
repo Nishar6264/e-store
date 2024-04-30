@@ -34,8 +34,8 @@ orderRouter.get("/", async (req, res) => {
 
 
 orderRouter.post("/", async (req, res) => {
-  const { userId, phone, address, quantity, productName,productPrice,
-    fullname, total } = req.body;
+  const { userId, phone, address, quantity, productName,totalPrices,
+    fullname,  } = req.body;
 
   const Orders = await createOrders({
     userId,
@@ -43,9 +43,8 @@ orderRouter.post("/", async (req, res) => {
     address,
     quantity,
     productName,
-    productPrice,
+    totalPrices,
     fullname,
-    total,
   });
   // console.log(Orders)
   if (!Orders) {

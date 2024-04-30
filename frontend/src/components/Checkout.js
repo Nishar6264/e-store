@@ -78,10 +78,8 @@ export default function Checkout() {
           address: values.address,
           fullname: values.fullName,
           quantity: item.quantity,
-          productPrice: item.product.price,
+          totalPrices: cartTotalPrice,
           productName: item.product.name,
-
-          total: cartTotalPrice,
         };
         await createOrderUser(dispatch, paramsOrder);
       }
@@ -239,8 +237,9 @@ export default function Checkout() {
                             <strong className="small font-weight-bold">
                               {item.product.name}
                             </strong>
+                    
                             <span className="text-muted small">
-                              ₹{item.product.price} x {item.quantity}
+                              {item.quantity}
                             </span>
                           </li>
                           <li className="border-bottom my-2"></li>

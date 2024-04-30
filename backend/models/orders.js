@@ -15,9 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       address: DataTypes.STRING,
       quantity: DataTypes.INTEGER,
       fullname: DataTypes.STRING,
-      total: DataTypes.STRING,
       productName:DataTypes.STRING,
-      productPrice:DataTypes.STRING,
+      totalPrices:DataTypes.STRING,
       status: {
         type: DataTypes.TINYINT,
         defaultValue: false,
@@ -32,6 +31,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Orders",
     }
   );
-  Orders.sync({ force: true });
+  // Orders.sync({ alter: true });
   return Orders;
 };
