@@ -41,7 +41,7 @@ export default function ProductForYou({ listProduct }) {
         {listProduct?.map((item, index) => {
           return (
             <div className="shadow " key={index}>
-              <div className="product text-center mb-5">
+              <div className="product text-center ">
                 <div className="position-relative">
                   <div className="badge text-white badge-secondary "></div>
                   <NavLink className="d-block" to={`/detail/${item.id}`}>
@@ -53,7 +53,7 @@ export default function ProductForYou({ listProduct }) {
                     />
                   </NavLink>
                   <div className="product-overlay">
-                    <ul className="mb-0 list-inline">
+                    <ul className="list-inline">
                       <li className="list-inline-item">
                         <NavLink
                           className="btn btn-sm btn-dark"
@@ -74,23 +74,16 @@ export default function ProductForYou({ listProduct }) {
                     </ul>
                   </div>
                 </div>
-                <div className="px-3">
+                <div className="px-3 m-2 ">
                   <h6>
-                    <a className="reset-anchor" href="detail.html">
-                      <p className="d-block"> {item.name}</p>
-                    </a>
+                    <p className="d-block"> {item.name}</p>
                   </h6>
-                  {/* {
-                    
-                  console.log(listProduct)
-                  }
-                  {listProduct?.ProductVariants[0].Variants.map((variant, index) => (
-                  <p key={index} className=" text-dark">₹{variant.price}</p>
-
-                ))} */}
-                
-                 
-
+                  {item.ProductVariants &&
+                    item.ProductVariants[0]?.Variants && (
+                      <p className="small text-muted m-0">
+                        ₹{item.ProductVariants[0].Variants[0].price}
+                      </p>
+                    )}
                 </div>
               </div>
             </div>

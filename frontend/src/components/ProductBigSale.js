@@ -34,6 +34,7 @@ export default function ProductBigSale({ productDiscount }) {
 
   return (
     <Slider {...settings}>
+   {/* {   console.log(productDiscount)} */}
       {productDiscount?.map((item, index) => {
         return (
           <div className="shadow " key={index}>
@@ -77,10 +78,20 @@ export default function ProductBigSale({ productDiscount }) {
                     <p className="d-block"> {item.name}</p>
                   </a>
                 </h6>
-                <p className="small text-muted font-weight-bold">
-                ₹{item.price} -{" "}
-                  <span className="bg-warning">{item.promotionPercent}%</span>
-                </p>
+                {/* {productDiscount?.ProductVariants[0].Variants.map((item, index)=>{
+                  <p key={index} className="small text-muted font-weight-bold">
+                  ₹{item.price} -{" "}
+                    <span className="bg-warning">{item.promotionPercent}%</span>
+                  </p>
+                })} */}
+                {item.ProductVariants && item.ProductVariants[0]?.Variants && (
+              <p className="small text-muted">
+                ₹{item.ProductVariants[0].Variants[0].price} -{" "}
+              </p>
+
+            )}
+            <span className="bg-warning">{item.promotionPercent}%</span>
+                
               </div>
             </div>
           </div>

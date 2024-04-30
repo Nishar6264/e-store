@@ -21,6 +21,7 @@ export default function Products({ productPanigation, sort }) {
 
   return (
     <div className="row">
+      {console.log(productSort)}
       {productSort?.map((item, index) => (
         <div className="col-lg-4 col-sm-6 Section_Category mb-5" key={index}>
           <div className="product text-center">
@@ -60,7 +61,12 @@ export default function Products({ productPanigation, sort }) {
             <h6>
               <a className="reset-anchor">{item.name}</a>
             </h6>
-            <p className="small text-muted">₹{item.price}</p>
+             {/* Check if ProductVariants and Variants exist */}
+             {item.ProductVariants && item.ProductVariants[0]?.Variants && (
+              <p className="small text-muted">
+                ₹{item.ProductVariants[0].Variants[0].price}
+              </p>
+            )}
           </div>
         </div>
       ))}
