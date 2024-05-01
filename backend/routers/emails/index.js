@@ -52,24 +52,16 @@ emailRouter.post("/", [authenticate], async (req, res) => {
 });
 
 emailRouter.post("/status", [authenticate], async (req, res) => {
-  const { fullName, email, phone, address } = req.body;
-
+  const email = "nalam.netclues@gmail.com"
   const user = req.user;
 
-  const subject = "Order Status Changed";
-  const status = false;
+  const subject = "Order Details";
 
   const orderUser = await getOrders(user.id);
-
- 
+  console.log(orderUser)
 
   const htmlHead = `<table style="width:50%">
-    <tr style="border: 1px solid black;">
-    <th style="border: 1px solid black;">Product Name</th>
-    <th style="border: 1px solid black;"> Shipping Status</th>
-    <th style="border: 1px solid black;">Delivery Status</th>
-    
-    </tr>`;
+    <tr style="border: 1px solid black;"><th style="border: 1px solid black;">Product Name</th><th style="border: 1px solid black;">Shipped Status</th><th style="border: 1px solid black;">Delivery Status</th>`;
 
   let htmlContent = "";
 
@@ -78,18 +70,21 @@ emailRouter.post("/status", [authenticate], async (req, res) => {
       <td style="border: 1px solid black; font-size: 1.2rem; text-align: center;">${
         orderUser[i].productName
       }</td>
-      <td style="border: 1px solid black; font-size: 1.2rem; text-align: center;"><img src=${
-        orderUser[i].status
-      }width="80" height="80"></td>
+      <td style="border: 1px solid black; font-size: 1.2rem; text-align: center;">${
+        orderUser[i].status ? "Shipped"
+        : "Not Shipped Yet"}
+      </td>
       <td style="border: 1px solid black; font-size: 1.2rem; text-align: center;">${
         orderUser[i].delivery
-      }$</td>`;
+          ? "Delivered"
+          : "Not Delivered"}
+      </td>
+      <tr>`;
   }
   const htmlResult = `
-  <h1>Hi, ${fullName}</h1>
-  <h2>Your order Status has been updated! </h2>
-  <h3>Phone: ${phone}</h3>
-  <h3>Address: ${address}</h3>
+  
+  <h2>Your Order Status! </h2>
+
     ${htmlHead}
     ${htmlContent}
   <p>Thank You!</p>

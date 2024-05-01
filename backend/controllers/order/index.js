@@ -1,4 +1,4 @@
-const { Orders, User } = require("../../models");
+const { Orders, User,Products } = require("../../models");
 
 const getOrders = async (userId) => {
   try {
@@ -48,7 +48,46 @@ const getListOrders = async () => {
   }
 };
 
+
+const updateOrderStatusAndDelivery = async (req, res) => {
+  const { orderId, status, delivery } = req.body;
+
+  try {
+    const order = await Orders.findByPk(orderId);
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    // Update order status
+    order.status = status;
+    
+    // Update delivery status
+    order.delivery = delivery;
+
+    await order.save();
+
+    if (delivery) {
+      // Decrease stock value
+      const product = await Products.findByPk(order.productId);
+      if (product) {
+        product.stocks -= order.quantity;
+        await product.save();
+      }
+    }
+
+    res.status(200).json({ message: 'Order status and delivery updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
+
 module.exports = {
+  updateOrderStatusAndDelivery,
+  
   getOrders,
   createOrders,
   updateOrders,

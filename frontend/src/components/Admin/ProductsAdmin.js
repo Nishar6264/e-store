@@ -91,8 +91,8 @@ export default function ProductsAdmin() {
       img2: "",
       img3: "",
       img4: "",
+      categoryId: "",
       category: "",
-      originalPrice: "",
       promotionPercent: "",
     },
     validationSchema: Yup.object().shape({
@@ -106,9 +106,9 @@ export default function ProductsAdmin() {
       img3: Yup.string().required("(*) Img3 name is not empty"),
       img4: Yup.string().required("(*) Img4 name is not empty"),
       category: Yup.string().required("(*) category is not empty"),
-      originalPrice: Yup.string()
-        .required("(*) originalPrice is not empty")
-        .matches(/^[0-9]+$/, "originalPrice is invalid"),
+      categoryId  : Yup.string()
+        .required("(*) categoryId  is not empty")
+        .matches(/^[0-9]+$/, "categoryId   is invalid"),
       promotionPercent: Yup.string()
         .required("(*) promotionPercent is not empty")
         .matches(/^[0-9]+$/, "promotionPercent is invalid"),
@@ -337,19 +337,19 @@ export default function ProductsAdmin() {
                                     </p>
                                   </div>
                                   <div className="form-group">
-                                    <label htmlFor="originalPrice">
-                                      originalPrice
+                                    <label htmlFor="categoryId  ">
+                                      categoryId  
                                     </label>
                                     <input
-                                      name="originalPrice"
+                                      name="categoryId  "
                                       type="text"
                                       className="form-control"
-                                      id="originalPrice"
-                                      placeholder="Enter originalPrice"
+                                      id="categoryId  "
+                                      placeholder="Enter categoryId "
                                       onChange={formik.handleChange}
                                     />
                                     <p className="text-2xs text-danger">
-                                      {formik.errors.originalPrice}
+                                      {formik.errors.categoryId }
                                     </p>
                                   </div>
                                   <div className="form-group">

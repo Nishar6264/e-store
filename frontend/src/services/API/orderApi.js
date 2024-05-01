@@ -25,15 +25,17 @@ export const createOrderUser = async (dispatch, params) => {
   }
 };
 
-export const updateOrderUser = async (dispatch, id) => {
+export const updateOrderStatus = async (dispatch, data) => {
   dispatch(updateOrderStart());
   try {
-    await axios.patch(`${DOMAIN}/api/v1/order${id}`, );
-    dispatch(updateOrderSuccess());
-  } catch (err) {
-    dispatch(updateOrderFailed(err));
+    const response = await axios.patch(`${DOMAIN}/api/v1/order/orderstatus`, data);
+    dispatch(updateOrderSuccess(response.data));
+  } catch (error) {
+    dispatch(updateOrderFailed(error));
   }
 };
+
+
 
 export const getListOrderUser = async (dispatch, params = "") => {
   dispatch(getListOrderStart());
@@ -49,7 +51,7 @@ export const getListOrderUser = async (dispatch, params = "") => {
 export const sendMailStatus = async (dispatch, user, accessToken) => {
   dispatch(sendMailStart());
   try {
-    await axios.post(`${DOMAIN}/api/v1/status/emails`, user, {
+    await axios.post(`${DOMAIN}/api/v1/emails/status`, user, {
       headers: {
         token: `Bearer ${accessToken}`,
       },

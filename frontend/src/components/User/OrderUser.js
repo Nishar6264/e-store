@@ -45,17 +45,14 @@ export default function OrderUser() {
                 {" "}
                 <strong className="text-small text-uppercase">ID Order</strong>
               </th>
+              
               <th className="border-0" scope="col">
                 {" "}
-                <strong className="text-small text-uppercase">ID User</strong>
+                <strong className="text-small text-uppercase">productName</strong>
               </th>
               <th className="border-0" scope="col">
                 {" "}
-                <strong className="text-small text-uppercase">Name</strong>
-              </th>
-              <th className="border-0" scope="col">
-                {" "}
-                <strong className="text-small text-uppercase">Phone</strong>
+                <strong className="text-small text-uppercase">Qunatity</strong>
               </th>
               <th className="border-0" scope="col">
                 {" "}
@@ -86,19 +83,16 @@ export default function OrderUser() {
                   <p className="mb-0 small">{item.id}</p>
                 </td>
                 <td className="align-middle border-0">
-                  <p className="mb-0 small">{item.idUser}</p>
+                  <p className="mb-0 small">{item.productName}</p>
                 </td>
                 <td className="align-middle border-0">
-                  <p className="mb-0 small">{item.fullname}</p>
-                </td>
-                <td className="align-middle border-0">
-                  <p className="mb-0 small">{item.phone}</p>
+                  <p className="mb-0 small">{item.quantity}</p>
                 </td>
                 <td className="align-middle border-0">
                   <p className="mb-0 small">{item.address}</p>
                 </td>
                 <td className="align-middle border-0">
-                  <p className="mb-0 small">${item.total}</p>
+                  <p className="mb-0 small">${item.totalPrices}</p>
                 </td>
                 <td className="align-middle border-0">
                   <p className="mb-0 small">

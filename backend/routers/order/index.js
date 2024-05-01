@@ -1,5 +1,7 @@
 const express = require("express");
 const {
+
+  updateOrderStatusAndDelivery,
   getOrders,
   createOrders,
   updateOrders,
@@ -9,6 +11,7 @@ const { getCartByUser } = require("../../controllers/carts");
 const orderRouter = express.Router();
 
 
+orderRouter.patch("/orderstatus",updateOrderStatusAndDelivery,)
 
 
 
@@ -23,6 +26,7 @@ orderRouter.get("/", async (req, res) => {
     res.status(200).send(user);
   } else {
     const listOrders = await getListOrders();
+    console.log("Data comming from listOrder",listOrders)
     if (!listOrders) {
       return res.status(500).send("Can't get list Orders");
     }
@@ -77,6 +81,7 @@ orderRouter.patch("/:id", async (req, res) => {
   } = req.body;
 
   const isOrderExists = getOrders(id);
+  console.log();
 
   if (!isOrderExists) {
     return res.status(500).send(`Order ${id} is not exists in db`);
